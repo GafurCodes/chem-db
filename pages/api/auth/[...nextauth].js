@@ -1,10 +1,7 @@
+import { db } from "../../../util/MongoDBConnection";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-const users = [
-  { username: "omega", password: "lul" },
-  { username: "kappa", password: "pride" },
-];
+import bcrypt from "bcrypt";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -23,15 +20,18 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        const toFind = users.find(
-          (user) =>
-            user.username == credentials.username &&
-            user.password == credentials.password
+        const user = await (await db).collection("users").findOne({
+          username: credentials.username,
+        });
+
+        const passwordMatch = await bcrypt.compare(
+          credentials.password,
+          user.password
         );
 
-        if (toFind) {
+        if (passwordMatch) {
           // Any object returned will be saved in `user` property of the JWT
-          return { name: `${toFind.password} ${toFind.username}` };
+          return { name: user.username };
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
