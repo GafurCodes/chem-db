@@ -22,6 +22,7 @@ export default NextAuth({
     // Note: This option is ignored if using JSON Web Tokens
     updateAge: 24 * 60 * 60, // 24 hours
   },
+  pages: { signIn: "/signup" },
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
