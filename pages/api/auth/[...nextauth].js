@@ -4,25 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 
 export default NextAuth({
-  // Configure one or more authentication providers
-  session: {
-    // Choose how you want to save the user session.
-    // The default is `"jwt"`, an encrypted JWT (JWE) in the session cookie.
-    // If you use an `adapter` however, we default it to `"database"` instead.
-    // You can still force a JWT session by explicitly defining `"jwt"`.
-    // When using `"database"`, the session cookie will only contain a `sessionToken` value,
-    // which is used to look up the session in the database.
-    strategy: "jwt",
-
-    // Seconds - How long until an idle session expires and is no longer valid.
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-
-    // Seconds - Throttle how frequently to write to database to extend a session.
-    // Use it to limit write operations. Set to 0 to always update the database.
-    // Note: This option is ignored if using JSON Web Tokens
-    updateAge: 24 * 60 * 60, // 24 hours
-  },
-  pages: { signIn: "/signup" },
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -37,18 +18,20 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        const user = await (await db).collection("users").findOne({
-          username: credentials.username,
-        });
+        // const user = await (await db).collection("users").findOne({
+        //   username: credentials.username,
+        // });
 
-        const passwordMatch = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        // const passwordMatch = await bcrypt.compare(
+        //   credentials.password,
+        //   user.password
+        // );
+
+        let passwordMatch = true;
 
         if (passwordMatch) {
           // Any object returned will be saved in `user` property of the JWT
-          return { name: user.username };
+          return { name: "works" };
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
