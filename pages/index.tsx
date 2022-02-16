@@ -4,11 +4,11 @@ import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
 
-  if (status === "authenticated") {
-    return <p>signed in as {session?.user?.name}</p>;
-  }
+  // if (status === "authenticated") {
+  //   return <p>signed in as {session?.user?.name}</p>;
+  // }
 
   return (
     <div>
