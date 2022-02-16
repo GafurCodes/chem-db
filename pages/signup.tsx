@@ -4,7 +4,14 @@ import toast, { Toaster } from "react-hot-toast";
 
 const Signup: NextPage = () => {
   const signup = (body: { username: string; password: string }) => {
-    fetch("/api/signup", { body: JSON.stringify(body), method: "POST" })
+    fetch("/api/signup", {
+      body: JSON.stringify(body),
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+      },
+    })
       .then((res) => res.json())
       .then((res) => console.log(res));
   };
