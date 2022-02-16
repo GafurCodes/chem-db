@@ -18,20 +18,18 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        // const user = await (await db).collection("users").findOne({
-        //   username: credentials.username,
-        // });
+        const user = await (await db).collection("users").findOne({
+          username: credentials.username,
+        });
 
-        // const passwordMatch = await bcrypt.compare(
-        //   credentials.password,
-        //   user.password
-        // );
-
-        let passwordMatch = true;
+        const passwordMatch = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
 
         if (passwordMatch) {
           // Any object returned will be saved in `user` property of the JWT
-          return { name: "works" };
+          return { name: user.username };
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
